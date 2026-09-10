@@ -14,8 +14,6 @@ func main(){
 	map1["some"] = 33
 	fmt.Println(map1)
 
-
-
 	vertex_map := map[string] Vertex{
 		"Something": Vertex{12, 43},
 		"Another something": {34, 54},
@@ -28,4 +26,7 @@ func main(){
 
 	delete(vertex_map, "Something")		//deleting an elem
 	fmt.Println(vertex_map)
+
+	element, ok := vertex_map["Another something"]		//checking presence of an elem (ok returns true if an elem is present, and vice versa)
+	fmt.Println(ok, element)
 }
