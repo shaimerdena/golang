@@ -10,4 +10,6 @@ func main(){
 
 	primes := [5]int{2,3,5,7,11}
 	fmt.Println(primes)
+
+	
 }
