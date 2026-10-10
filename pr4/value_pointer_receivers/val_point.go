@@ -61,13 +61,13 @@ func main() {
 
 	// m := map[string]Counter{"a": {}}
 	// m["a"].Get() //compile
-	// m["a"].Inc()	//no	| bc map doesn't give a permission to do so, bc of rehashing
+	// m["a"].Inc()	//no	| bc map doesn't give a permission to do so, bc it's not addressable
 
 	// s := []Counter{{}}
-	// s[0].Inc()
+	// s[0].Inc()	//compile
 
 	// pm := map[string]*Counter{"a": {}}
-	// pm["a"].Inc()
+	// pm["a"].Inc()	//compile
 
 	accounts := []Account{{"Ali", 100}, {"Bota", 200}}
 	for _, acc := range accounts {
