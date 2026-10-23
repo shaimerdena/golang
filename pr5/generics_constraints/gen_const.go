@@ -3,7 +3,6 @@ package main
 import (
 	"cmp"
 	"fmt"
-	// "maps"
 	"strings"
 )
 
@@ -220,7 +219,4 @@ func main(){
 	fmt.Println(c == d)	//false
 	// var e, f any = []int{1}, []int{1}
 	// fmt.Println(e == f)	//won't compile, bc slices are uncomparable
-
-
-	// i should do task6 and task7
 }
