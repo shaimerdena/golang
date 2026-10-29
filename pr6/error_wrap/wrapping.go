@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"io/fs"
 	"os"
+	"strconv"
+	"strings"
 )
 
 var ErrNotFound = errors.New("student not found")
@@ -105,6 +107,40 @@ func report(err error) {
 	fmt.Println("500:", err)
 }
 
+// 4. parsing all the lines
+// Write ParseAll(input string) ([]Record, error). A bad line must not stop the
+// parsing: collect every error and return them together with errors.Join .
+// Each error must say which line failed ( line 2: ... ) and keep the original error inside ( %w ).
+// Missing comma → your own sentinel ErrBadFormat. Bad number → the error from strconv.Atoi .
+type Record struct{
+	name string
+	grade int
+}
+var ErrBadFormat = errors.New("bad format")
+func ParseAll(input string) ([]Record, error){
+	var s []string = strings.Split(input, "\n")
+	var r []Record
+	var joined []error
+	for i, v := range s {
+		parts := strings.Split(v, ",")
+		if len(parts) != 2{
+			joined = append(joined, fmt.Errorf("line %d: %w", i+1, ErrBadFormat))
+			continue
+		}
+		score, err := strconv.Atoi(strings.TrimSpace(parts[1]))
+		if err != nil{
+			joined = append(joined, fmt.Errorf("line %d: %w", i+1, err))
+			continue
+		}
+		if score < 0 || score > 100 {
+			joined = append(joined, fmt.Errorf("line %d: invalid grade", i+1))
+			continue
+		}
+		r = append(r, Record{name: parts[0], grade: score})
+	}
+	return r, errors.Join(joined...)
+}
+
 
 func main(){
 	err := handler()
@@ -159,4 +195,18 @@ func main(){
 	report(AddBonus(gb, "D", 10))
 	report(AddBonus(gb, "A", 10))
 	report(AddBonus(gb, "B", 30))
+
+	// parsing
+	input := `Aruzhan, 95
+	Dias, 8O
+	Timur
+	Bota, 99999999999999999999
+	Ali, 70`
+
+	report, err := ParseAll(input)
+	fmt.Println(report)
+	fmt.Println(err)
+	fmt.Println(errors.Is(err, ErrBadFormat))
+	fmt.Println(errors.Is(err, strconv.ErrSyntax))
+	fmt.Println(errors.Is(err, strconv.ErrRange))
 }
