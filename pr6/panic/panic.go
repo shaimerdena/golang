@@ -25,6 +25,22 @@ type Task struct {
 	Name string
 	Run  func() error
 }
+func SafeRun(tasks []Task) []error {
+	var errs []error
+	for _, task := range tasks {
+		func(t Task) {
+			defer func() {
+				if r := recover(); r != nil {
+					errs = append(errs, fmt.Errorf("task %s: panic: %v", t.Name, r))
+				}
+			}()
+			if err := t.Run(); err != nil {
+				errs = append(errs, fmt.Errorf("task %s: %w", t.Name, err))
+			}
+		}(task)
+	}
+	return errs
+}
 
 
 func main(){
@@ -42,4 +58,53 @@ func main(){
 
 	n := 2
 	fmt.Println(mustPositive(n))
+
+
+	tasks := []Task{
+		{
+			Name: "task1",
+			Run: func() error {
+				fmt.Println("task1: success")
+				return nil
+			},
+		},
+		{
+			Name: "task2",
+			Run: func() error {
+				fmt.Println("task2: panic")
+				panic("config is missing")
+			},
+		},
+		{
+			Name: "task3",
+			Run: func() error {
+				fmt.Println("task3: index out of range")
+				s := []int{1, 2, 3}
+				fmt.Println(s[5]) // panic
+				return nil
+			},
+		},
+		{
+			Name: "task4",
+			Run: func() error {
+				fmt.Println("task4: write to nil map")
+				var m map[string]int
+				m["x"] = 1 // panic
+				return nil
+			},
+		},
+		{
+			Name: "task5",
+			Run: func() error {
+				fmt.Println("task5: sentinel error")
+				return fmt.Errorf("sentinel error")
+			},
+		},
+	}
+
+	errs := SafeRun(tasks)
+	for _, err := range errs {
+		fmt.Println(err)
+	}
+
 }
