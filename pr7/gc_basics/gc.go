@@ -92,7 +92,7 @@ func main(){
 
 	// Q: And why does GOMEMLIMIT=100MiB together with GOGC=off work so
 	// well here?
-	// A: bc GOGC=off disables the GC, but GOMEMLIMIT=100MiB sets a hard limit on memory usage. 
+	// A: bc GOGC=off disables the GC, but GOMEMLIMIT=100MiB sets a soft limit on memory usage. 
 	// This prevents the program from consuming too much memory, which helps maintain performance.
 	// TIP: In containers (Docker, Kubernetes) set GOMEMLIMIT a bit below the container's memory limit (e.g. 90 %).
 
