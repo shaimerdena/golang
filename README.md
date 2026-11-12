@@ -5,3 +5,5 @@ Contents
 4. [Structs and Methods](./pr4/)
 5. [Interfaces and Generics](./pr5/)
 6. [Function/Closure/Error/Defer/Panic/Recover](./pr6/)
+7. [Memory management](./pr7/)
+8. [Goroutines/GO Scheduler and Synchronization](./pr8/)
