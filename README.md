@@ -7,3 +7,4 @@ Contents
 6. [Function/Closure/Error/Defer/Panic/Recover](./pr6/)
 7. [Memory management](./pr7/)
 8. [Goroutines/GO Scheduler and Synchronization](./pr8/)
+9. [Channels and select](./pr9/)
